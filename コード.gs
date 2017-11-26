@@ -1,12 +1,16 @@
 var toDay = new Date();
 var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("mail");
+var sheetInst = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Instruction");
 var lastRow = sheet.getLastRow();
+var report = "";
+//var roomID = sheetInst.getRange(2,1).getValue();
+var Sub = sheetInst.getRange('B2').getValue();
 
 
 function searchContactMail() {
   
   /* Gmailから特定条件のスレッドを検索しメールを取り出す */
-  var strTerms = 'subject:引越し侍（マーケ） 日報 '; //メール検索条件
+  var strTerms = 'subject:'+Sub; //メール検索条件
   var numMailMax = 5; //取得するメール総数  
   var numMail = 1; //1度に取得するメール数
   var myThreads; //条件にマッチしたスレッドを取得、最大500通と決まっている
@@ -25,18 +29,19 @@ function searchContactMail() {
       valMsgs[j] = [];
       valMsgs[j][0] = myMsgs[j][0].getDate();
       valMsgs[j][1] = myMsgs[j][0].getSubject();
-      valMsgs[j][2] = myMsgs[j][0].getPlainBody(); 
+      valMsgs[j][2] = myMsgs[j][0].getPlainBody();
+      var report = valMsgs[0][2];
     }
  
     /* スプレッドシートに出力 */
     if(myMsgs.length>0){
       var insert = sheet.getRange(lastRow+1, 1, j, 3).setValues(valMsgs); //シートに貼り付け
-      //var text =;
       
-      var client = ChatWorkClient.factory({token: '86524a5dcad509fe835f538486810611'});　//チャットワークAPI
+      
+      var client = ChatWorkClient.factory({token: 'd124ab756105618eadad7252cf6ef892'});　//チャットワークAPI
       client.sendMessage({
-        room_id:68553100, //ルームID
-        body:toDay + String.fromCharCode(10)  });
+        room_id:31434119, //ルームID
+        body:toDay + String.fromCharCode(10) + report});
     } 
   }
 }
