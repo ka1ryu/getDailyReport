@@ -1,0 +1,2 @@
+# getDailyReport
+メールで来る日報を毎日チャットワークに送るGAS
